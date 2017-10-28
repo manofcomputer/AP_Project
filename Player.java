@@ -1,13 +1,13 @@
-
 import javafx.scene.paint.Color;
 
 public class Player {
 	private Color color;
-	private boolean isAlive;
+	private boolean isAlive,hasPlayed;
 	public Player(Color c)
 	{
 		color=c;
-		isAlive=false;
+		isAlive=true;
+		hasPlayed=false;
 	}
 	public Color getColor() {
 		return color;
@@ -20,5 +20,11 @@ public class Player {
 	}
 	public void setAlive(boolean isAlive) {
 		this.isAlive = isAlive;
+	}
+	public boolean hasPlayed() {
+		return hasPlayed;
+	}
+	public void hasPlayed(boolean hasPlayed) {
+		this.hasPlayed = hasPlayed;
 	}
 }
