@@ -8,7 +8,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class Game extends Application {
+import java.io.*;
+
+public class Game extends Application implements Serializable{
+	public final long serialUIDVersion = 11L;
 	
 	private double sceneWidth = 400;
     private double sceneHeight = 600;
@@ -33,10 +36,17 @@ public class Game extends Application {
 		//Initializing players 
 		int number_players=3;
 		players=new Player[number_players];
-		players[0]=new Player(Color.RED);
+		players[0]=new Player(new Color(1,1,1,1));
 		players[1]=new Player(Color.GREEN);
 		players[2]=new Player(Color.BLUE);
 		grid=new Grid(sceneWidth,sceneHeight,border,n,m,number_players);
+
+		try {
+			deserialize();
+		}
+		catch (Exception e){
+			System.out.println("No resume game");
+		}
 
 		Menu options = new Menu("Options");
 		Menu Undo = new Menu("Undo");
@@ -49,6 +59,41 @@ public class Game extends Application {
 		vBox.setStyle("-fx-background-color: #1e252a");
 		Scene scene = new Scene(vBox,sceneWidth+border,sceneHeight+border+25,Color.BLACK);
         primaryStage.setScene(scene);
+        primaryStage.setOnCloseRequest(event -> {
+			try {
+				closeProgram();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		});
         primaryStage.show();
+	}
+	public void closeProgram() throws IOException{
+		serialize();
+
+	}
+	public void serialize() throws IOException{
+		ObjectOutputStream out = null;
+		try{
+			out = new ObjectOutputStream(
+					new FileOutputStream("out.txt")
+			);
+			out.writeObject(grid);
+		}
+		finally {
+			out.close();
+		}
+	}
+	public void deserialize() throws IOException,ClassNotFoundException{
+		ObjectInput in = null;
+		try{
+			in = new ObjectInputStream(
+					new FileInputStream("out.txt")
+			);
+			grid = (Grid) in.readObject();
+		}
+		finally {
+			in.close();
+		}
 	}
 }

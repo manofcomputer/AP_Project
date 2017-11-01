@@ -3,7 +3,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 
-public class Cube extends Pane {
+import java.io.Serializable;
+
+public class Cube extends Pane implements Serializable{
 	Rectangle upper,lower;
 	Line ul,ur,ll,lr;
 	public Cube(double x, double y, double width, double height,Color c)

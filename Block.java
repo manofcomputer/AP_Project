@@ -6,7 +6,9 @@ import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
 import javafx.util.Duration;
 
-public class Block extends Group{
+import java.io.Serializable;
+
+public class Block extends Group implements Serializable{
 	
 	private double x,y,width,height;
     private int critical_mass,current_mass;

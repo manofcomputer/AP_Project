@@ -5,13 +5,15 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class Grid extends Pane {
+import java.io.Serializable;
+
+public class Grid extends Pane implements Serializable{
 
     private double block_width;
     private double block_height;
     private Block[][] playfield; // For the main blocks of the cube in which spheres are added
     private Cube[][] cubes; // For the structure of the cube
-    private Button[][] buttons; // The buttons which make the cubes clickable 
+    private Button[][] buttons; // The buttons which make the cubes clickable
     private int player_number=0; // The current player who is playing
     private int n,m; // The grid is n x m
     private Color color; // Color of the current player
