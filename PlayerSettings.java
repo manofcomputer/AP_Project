@@ -3,6 +3,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -24,27 +25,7 @@ public class PlayerSettings {
         VBox vBox = new VBox();
         vBox.setSpacing(5);
         vBox.setPadding(new Insets(20,10,10,10));
-
-        HBox redSetting = new HBox();
-        HBox greenSetting = new HBox();
-        HBox blueSetting = new HBox();
-
-        redSetting.setAlignment(Pos.CENTER);
-        blueSetting.setAlignment(Pos.CENTER);
-        greenSetting.setAlignment(Pos.CENTER);
-
-        Label red = new Label("Red:   ");
-        TextField Tred = new TextField("1");
-
-        Label green= new Label("Green:");
-        TextField Tgreen = new TextField("1");
-
-        Label blue = new Label("Blue:  ");
-        TextField Tblue = new TextField("1");
-
-        redSetting.getChildren().addAll(red,Tred);
-        greenSetting.getChildren().addAll(green,Tgreen);
-        blueSetting.getChildren().addAll(blue,Tblue);
+        final ColorPicker colorPicker = new ColorPicker();
 
         Button SubmitExit = new Button("Submit & Exit");
         SubmitExit.setOnAction(event -> closeProgram());
@@ -53,7 +34,7 @@ public class PlayerSettings {
         SubmitExit.setOnMouseExited(e -> SubmitExit.setStyle(IDLE_BUTTON_STYLE));
         SubmitExit.setTextFill(Color.WHITE);
 
-        vBox.getChildren().addAll(redSetting,greenSetting,blueSetting,SubmitExit);
+        vBox.getChildren().addAll(colorPicker,SubmitExit);
         Scene scene = new Scene(vBox,350,400);
         vBox.setStyle("-fx-background: #1e252a;");
         vBox.setAlignment(Pos.TOP_CENTER);

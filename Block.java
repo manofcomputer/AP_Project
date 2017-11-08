@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.scene.Group;
@@ -6,24 +7,36 @@ import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
 import javafx.util.Duration;
 
-import java.io.Serializable;
-
 public class Block extends Group implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private double x,y,width,height;
     private int critical_mass,current_mass;
     private int player_number;
-    private Color color;
-    private Sphere[] spheres=new Sphere[4];
+    transient private Color color;
+    private double c1,c2,c3;
+    transient private Sphere[] spheres;
     private int i,j;
-    RotateTransition rt;
+    transient private RotateTransition rt;
     
-    public Block(double x, double y, double width, double height,Color color,int i,int j) {
+    public void initialise()
+    {
+    	this.color=new Color(c1,c2,c3,1);
+    	spheres=new Sphere[4];
+    }
+    public Block(double x, double y, double width, double height,double c1,double c2,double c3,int i,int j) {
+    	spheres=new Sphere[4];
 		this.x=x;
 		this.y=y;
 		this.width=width;
 		this.height=height;
-		this.color=color;
+		this.c1=c1;
+		this.c2=c2;
+		this.c3=c3;
+		this.color=new Color(c1,c2,c3,1);
 		this.i=i;
 		this.j=j;
 		current_mass=0;
@@ -38,6 +51,9 @@ public class Block extends Group implements Serializable{
     public void addMass(Block[][] playfield) throws InterruptedException
 	{
 		color=Game.players[player_number].getColor();
+		c1=color.getRed();
+		c2=color.getGreen();
+		c3=color.getBlue();
 		if(current_mass<critical_mass-1)
 		{
 			Sphere s=new Sphere();
@@ -67,11 +83,20 @@ public class Block extends Group implements Serializable{
 			    rt.setInterpolator(Interpolator.LINEAR);
 			    rt.play();
 		    }
+		    if(current_mass==2 && critical_mass==4)
+		    {
+		    	rt = new RotateTransition(Duration.millis(5000),this);
+			    rt.setByAngle(360);
+			    rt.setCycleCount(Integer.MAX_VALUE);
+			    rt.setAxis(this.getRotationAxis());
+			    rt.setInterpolator(Interpolator.LINEAR);
+			    rt.play();
+		    }
 		}
 		else
 		{
-			rt.stop();
 			explode(playfield);
+			
 		}
 	}
 	public void explode(Block[][] playfield) throws InterruptedException
@@ -85,7 +110,101 @@ public class Block extends Group implements Serializable{
 	    s.setMaterial(material);
 	    this.getChildren().add(s);
 	    spheres[critical_mass-1]=s;
+	    /*
+	    int number_spheres=critical_mass-1;
 	    
+	    ParallelTransition pt = new ParallelTransition();
+	    
+	    if(i>0)
+		{
+			Sphere sphere=spheres[number_spheres];
+			Block block=playfield[i-1][j];
+			PathTransition t=new PathTransition();
+			t.setNode(sphere);
+			t.setDuration(Duration.seconds(0.25));
+			MoveTo moveTo = new MoveTo(sphere.getTranslateX(),sphere.getTranslateY());
+			LineTo l1=new LineTo(block.x+(width/2),block.y+(height/2));
+			Path p=new Path();
+			p.getElements().add(moveTo);
+			p.getElements().add(l1);
+			t.setPath(p);
+			//t.play();
+			pt.getChildren().add(t);
+			number_spheres--;
+		}
+		if(j>0)
+		{
+			Sphere sphere=spheres[number_spheres];
+			Block block=playfield[i][j-1];
+			PathTransition t=new PathTransition();
+			t.setNode(sphere);
+			t.setDuration(Duration.seconds(0.25));
+			MoveTo moveTo = new MoveTo(sphere.getTranslateX(),sphere.getTranslateY());
+			LineTo l1=new LineTo(block.x+(width/2),block.y+(height/2));;
+			Path p=new Path();
+			p.getElements().add(moveTo);
+			p.getElements().add(l1);
+			t.setPath(p);
+			//t.play();
+			pt.getChildren().add(t);
+			number_spheres--;
+		}
+		if(i<Game.n-1)
+		{
+			Sphere sphere=spheres[number_spheres];
+			Block block=playfield[i+1][j];
+			PathTransition t=new PathTransition();
+			t.setNode(sphere);
+			t.setDuration(Duration.seconds(0.25));
+			MoveTo moveTo = new MoveTo(sphere.getTranslateX(),sphere.getTranslateY());
+			LineTo l1=new LineTo(block.x+(width/2),block.y+(height/2));;
+			Path p=new Path();
+			p.getElements().add(moveTo);
+			p.getElements().add(l1);
+			t.setPath(p);
+			//t.play();
+			pt.getChildren().add(t);
+			number_spheres--;
+		}
+		if(j<Game.m-1)
+		{
+			Sphere sphere=spheres[number_spheres];
+			Block block=playfield[i][j+1];
+			PathTransition t=new PathTransition();
+			t.setNode(sphere);
+			t.setDuration(Duration.seconds(0.25));
+			MoveTo moveTo = new MoveTo(sphere.getTranslateX(),sphere.getTranslateY());
+			LineTo l1=new LineTo(block.x+(width/2),block.y+(height/2));;
+			Path p=new Path();
+			p.getElements().add(moveTo);
+			p.getElements().add(l1);
+			t.setPath(p);
+			//t.play();
+			pt.getChildren().add(t);
+			number_spheres--;
+		}
+		pt.play();
+		pt.setOnFinished(e -> {
+			try {
+				explode1(playfield);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
+		t.setOnFinished(e -> {
+			try {
+				explode1(playfield);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
+		*/
+		explode1(playfield);
+	}
+	public void explode1(Block[][] playfield) throws InterruptedException
+	{
 		for(int k=0;k<critical_mass;k++)
 		{
 			this.getChildren().remove(spheres[k]);
@@ -93,35 +212,33 @@ public class Block extends Group implements Serializable{
 		}
 		
 		current_mass=0;
+		int player_num=player_number;
+		player_number=-1;
+		
 		
 		if(i>0)
 		{
 			Block block=playfield[i-1][j];
-			block.setPlayer_number(player_number);
+			block.setPlayer_number(player_num);
 			block.addMass(playfield);
 		}
 		if(j>0)
 		{
 			Block block=playfield[i][j-1];
-			block.setPlayer_number(player_number);
+			block.setPlayer_number(player_num);
 			block.addMass(playfield);
 		}
 		if(i<Game.n-1)
 		{
 			Block block=playfield[i+1][j];
-			block.setPlayer_number(player_number);
+			block.setPlayer_number(player_num);
 			block.addMass(playfield);
 		}
 		if(j<Game.m-1)
 		{
 			Block block=playfield[i][j+1];
-			block.setPlayer_number(player_number);
+			block.setPlayer_number(player_num);
 			block.addMass(playfield);
-		}
-		
-		if(current_mass==0)
-		{
-			player_number=-1;
 		}
 	}
 	public int getCurrent_mass() {

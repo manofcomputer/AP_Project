@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -5,30 +6,51 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-import java.io.Serializable;
+public class Grid extends Pane implements Serializable {
 
-public class Grid extends Pane implements Serializable{
-
-    private double block_width;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private double block_width;
     private double block_height;
-    private Block[][] playfield; // For the main blocks of the cube in which spheres are added
-    private Cube[][] cubes; // For the structure of the cube
-    private Button[][] buttons; // The buttons which make the cubes clickable
-    private int player_number=0; // The current player who is playing
-    private int n,m; // The grid is n x m
-    private Color color; // Color of the current player
+    Block[][] playfield; // For the main blocks of the cube in which spheres are added
+    transient private Cube[][] cubes; // For the structure of the cube
+    transient private Button[][] buttons; // The buttons which make the cubes clickable 
+    private int player_number; // The current player who is playing
+    int n,m; // The grid is n x m
+    transient private Color color; // Color of the current player
+    private double c1,c2,c3;
     private int remaining_players;
     private int count=0; // For counting that each player has played at least one turn
-    private int number_players; // Total number of players
-  
+    int number_players; // Total number of players
+    public void initialise()
+    {
+    	color=new Color(c1,c2,c3,1);
+    	cubes=null;
+    	buttons=null;
+    	for(int i=0;i<n;i++)
+    	{
+    		for(int j=0;j<m;j++)
+    		{
+    			playfield[i][j].initialise();
+    		}
+    	}
+    }
+    public Grid() {
+    	
+    }
     public Grid(double sceneWidth,double sceneHeight,double border, int n, int m,int number_players) {
     	player_number=0;
     	color=Game.players[0].getColor();
+    	this.c1=color.getRed();
+    	this.c2=color.getGreen();
+    	this.c3=color.getBlue();
     	this.n=n;
     	this.m=m;
     	this.number_players=number_players;
     	this.remaining_players=number_players;
-    	createGrid(sceneWidth,sceneHeight,border,n,m);
+    	//createGrid(sceneWidth,sceneHeight,border,n,m);
     }	
     public void createGrid(double sceneWidth,double sceneHeight,double border, int n, int m)
     {
@@ -51,7 +73,7 @@ public class Grid extends Pane implements Serializable{
             	 getChildren().add(cube);
             	 cubes[i][j]=cube; // For future referencing to change color of Grid
             	 
-                 Block node = new Block(x,y,width,height,color,i,j);
+                 Block node = new Block(x,y,width,height,c1,c2,c3,i,j);
                  getChildren().add(node);
                  playfield[i][j] = node;
                  
@@ -76,6 +98,82 @@ public class Grid extends Pane implements Serializable{
            	 	buttons[i][j]=b;
             }
         }
+    }
+    public void resumeGame(double sceneWidth,double sceneHeight,double border, int n, int m)
+    {
+    	block_width = (sceneWidth - border) / n;
+    	block_height = (sceneHeight - border) / m;
+    	cubes=new Cube[n][m];
+    	buttons=new Button[n][m];
+    	
+        for( int i=0; i < n; i++)
+        {
+            for( int j=0; j < m; j++)
+            {
+            	 double x=(i * block_width) + border;
+            	 double y=(j * block_height) + border;
+            	 double width=block_width;
+            	 double height=block_height;
+            	 
+            	 Cube cube=new Cube(x,y,width,height,color);
+            	 this.getChildren().add(cube);
+            	 cubes[i][j]=cube; // For future referencing to change color of Grid  
+            	 
+            	 Block node=playfield[i][j];
+            	 getChildren().add(node);
+            }
+         }
+        for( int i=0; i < n; i++)
+        {
+            for( int j=0; j < m; j++)
+            {
+            	Button b=new Button();
+            	b.setTranslateX((i * block_width) + border+10);
+            	b.setTranslateY((j * block_height) + border+10);
+            	b.setPrefSize(block_width,block_height);
+            	Rectangle r=new Rectangle();
+            	r.setWidth(block_width);
+           	 	r.setHeight(block_height);
+           	 	b.setShape(r);
+           	 	b.setStyle("-fx-background-color: transparent;");
+           	    
+           	 	b.setOnAction(new ClickEvent(playfield[i][j]));
+           	 	this.getChildren().add(b);
+           	 	buttons[i][j]=b;
+            }
+        }
+    	for(int i=0;i<n;i++)
+    	{
+    		for(int j=0;j<m;j++)
+    		{
+    			Block block=playfield[i][j];
+    			int num_spheres=block.getCurrent_mass();
+    			block.setCurrent_mass(0);
+    			for(int k=0;k<num_spheres;k++)
+    			{
+    				try {
+						block.addMass(playfield);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+    			}
+    		}
+    	}
+    	for(int i=0;i<n;i++)
+		{
+			for(int j=0;j<m;j++)
+			{
+				if(playfield[i][j].getPlayer_number()==-1 || playfield[i][j].getPlayer_number()==player_number)
+				{
+					buttons[i][j].setDisable(false);
+				}
+				else
+				{
+					buttons[i][j].setDisable(true);
+				}
+			}
+		}
     }
     public void changeColor(Color c)
     {
@@ -168,8 +266,13 @@ public class Grid extends Pane implements Serializable{
 						}
 					}
 				}
+				color=Game.players[player_number].getColor();
+				c1=color.getRed();
+		    	c2=color.getGreen();
+		    	c3=color.getBlue();
+				changeColor(color);
+				Game.serialize();
 				
-				changeColor(Game.players[player_number].getColor());
 			} 
 			catch (InterruptedException e) 
 			{

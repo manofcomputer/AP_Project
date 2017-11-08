@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -23,6 +24,20 @@ public class Menu extends Application{
     final String HOVERED_BUTTON_STYLE = "-fx-background-color: black;";
     Scene menu,settings;
     String x="2 Player Game";
+    static Color[] colors = new Color[8];
+
+    {
+        for (int i = 0; i < 8; i++)
+            colors[i] = new Color(1,1,1,1);
+        colors[0]=Color.RED;
+        colors[1]=Color.GREEN;
+        colors[2]=Color.BLUE;
+        colors[3]=Color.ORANGE;
+        colors[4]=Color.PINK;
+        colors[5]=Color.YELLOW;
+        colors[6]=Color.AQUA;
+        colors[7]=Color.BROWN;
+    }
 
     public static void main(String[] args) {
         launch(args);
@@ -61,16 +76,6 @@ public class Menu extends Application{
 
         borderPane.setTop(vBox);
 
-        /*ComboBox<String> comboBox = new ComboBox<>();
-        comboBox.getItems().addAll("2 Player Game","3 Player Game","4 Player Game","5 Player Game",
-                "6 Player Game","7 Player Game","8 Player Game");
-        comboBox.setValue("2 Player Game");
-        //comboBox.getStylesheets().addAll("sheet.css");
-        comboBox.setPrefWidth(220);
-        comboBox.setStyle(IDLE_BUTTON_STYLE);
-        comboBox.setOnMouseEntered(e -> comboBox.setStyle(HOVERED_BUTTON_STYLE));
-        comboBox.setOnMouseExited(e -> comboBox.setStyle(IDLE_BUTTON_STYLE));
-      //  comboBox.setTextFill(Color.WHITE);*/
         HBox hBox1 = new HBox();
         hBox1.setSpacing(10);
         hBox1.setAlignment(Pos.CENTER);
@@ -116,8 +121,32 @@ public class Menu extends Application{
 
         HBox hBox2 = new HBox();
         Button play = new Button("Play");
+        play.setOnAction((ActionEvent event) -> {
+            Game game = new Game(6,9,Integer.parseInt(num.getText()),colors);
+            try {
+                Game.display(false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
         Button playHD = new Button("Play with HD Grid");
+        playHD.setOnAction((ActionEvent event) -> {
+            Game game = new Game(10,15,Integer.parseInt(num.getText()),colors);
+            try {
+                Game.display(false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
         Button Resume = new Button("Resume");
+        Resume.setOnAction((ActionEvent event) -> {
+            Game game = new Game(0,0,8,colors);
+            try {
+                Game.display(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
         play.setStyle(IDLE_BUTTON_STYLE);
         playHD.setStyle(IDLE_BUTTON_STYLE);
         Resume.setStyle(IDLE_BUTTON_STYLE);
@@ -166,7 +195,6 @@ public class Menu extends Application{
         vBox3.setAlignment(Pos.BOTTOM_RIGHT);
         borderPane.setBottom(vBox3);
         Settings s = new Settings();
-      //  comboBox.getSelectionModel().selectedItemProperty().addListener((v,o,n)-> xx(n));
 
         menu = new Scene(borderPane, 600, 600);
 
@@ -175,8 +203,5 @@ public class Menu extends Application{
         primaryStage.setResizable(false);
         primaryStage.show();
     }
-    void xx(String tt){
-         x=tt;
-        System.out.println(x);
-    }
+
 }

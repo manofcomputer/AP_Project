@@ -1,99 +1,156 @@
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.Menu;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.io.*;
-
-public class Game extends Application implements Serializable{
-	public final long serialUIDVersion = 11L;
+public class Game {
 	
-	private double sceneWidth = 400;
-    private double sceneHeight = 600;
+	private double sceneWidth;
+    private double sceneHeight;
     
-    private double border=20;
+    private double border=25;
     
-    protected static int n = 6;
-    protected static int m = 9;
+    protected static int n;
+    protected static int m;
     
-    private Grid grid;
+    private int number_players;
+    private static Grid grid;
     
     protected static Player[] players;
-	
-	public static void main(String[] args) {
-        launch(args);
-    }
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		VBox vBox=new VBox();
-		
-		
-		//Initializing players 
-		int number_players=3;
-		players=new Player[number_players];
-		players[0]=new Player(new Color(1,1,1,1));
-		players[1]=new Player(Color.GREEN);
-		players[2]=new Player(Color.BLUE);
-		grid=new Grid(sceneWidth,sceneHeight,border,n,m,number_players);
-
-		try {
-			deserialize();
-		}
-		catch (Exception e){
-			System.out.println("No resume game");
-		}
-
+	public Game(double sceneWidth,double sceneHeight,int n,int m,int number_players,Player[] players)
+	{
+		this.sceneWidth=sceneWidth;
+		this.sceneHeight=sceneHeight;
+		this.n=n;
+		this.m=m;
+		this.number_players=number_players;
+		this.players = players;
+	}
+	public void start(Grid g) throws Exception {
+		Stage primaryStage = new Stage();
+		VBox root=new VBox();
 		Menu options = new Menu("Options");
+		options.setStyle("-fx-background-color: #6ab708");
 		Menu Undo = new Menu("Undo");
+		//Undo.setOnAction();
+		Undo.setStyle("-fx-background-color: #6ab708");
 		options.getItems().addAll(new MenuItem("Restart"),new MenuItem("Menu"));
 		MenuBar menuBar = new MenuBar();
 		menuBar.getMenus().addAll(options,Undo);
+		menuBar.setStyle("-fx-background-color: transparent");
+		root.getChildren().add(menuBar);
+		root.setStyle("-fx-background-color: #1e252a");
+		if(g==null) {
+			grid=new Grid(sceneWidth,sceneHeight,border,n,m,number_players);
+			grid.createGrid(sceneWidth, sceneHeight, border, n, m);
+		}
+		else {
+			grid = g;
+			grid.initialise();
+			grid.resumeGame(sceneWidth, sceneHeight, border, n, m);
+		}
+		root.getChildren().add(grid);
 		
-		
-		vBox.getChildren().addAll(menuBar,grid);
-		vBox.setStyle("-fx-background-color: #1e252a");
-		Scene scene = new Scene(vBox,sceneWidth+border,sceneHeight+border+25,Color.BLACK);
-        primaryStage.setScene(scene);
-        primaryStage.setOnCloseRequest(event -> {
-			try {
-				closeProgram();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		//Initializing players 
+		/*b1.setOnAction(e -> {
+			root.getChildren().removeAll(b1,b2);
+			number_players=3;
+			players=new Player[3];
+			players[0]=new Player(1,0,0);
+			players[1]=new Player(0,1,0);
+			players[2]=new Player(0,0,1);
+			grid=new Grid(sceneWidth,sceneHeight,border,n,m,number_players);
+			grid.createGrid(sceneWidth, sceneHeight, border, n, m);
+			root.getChildren().add(grid);
 		});
+		
+		b2.setOnAction(e -> {
+			root.getChildren().removeAll(b1,b2);
+			ObjectInputStream in = null;
+			try
+			{
+				try {
+					in=new ObjectInputStream(new FileInputStream("out.txt"));
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				try {
+					grid= (Grid) in.readObject();
+				} catch (ClassNotFoundException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			finally
+			{
+				try {
+					in.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			players=new Player[3];
+			players[0]=new Player(1,0,0);
+			players[1]=new Player(0,1,0);
+			players[2]=new Player(0,0,1);
+			grid.initialise();
+			root.getChildren().add(grid);
+			grid.resumeGame(sceneWidth, sceneHeight, border, n, m);
+			
+		});
+		*/
+		Scene scene = new Scene(root,sceneWidth+border,sceneHeight+border+35,Color.BLACK);
+        primaryStage.setScene(scene);
         primaryStage.show();
 	}
-	public void closeProgram() throws IOException{
-		serialize();
-
-	}
-	public void serialize() throws IOException{
-		ObjectOutputStream out = null;
-		try{
-			out = new ObjectOutputStream(
-					new FileOutputStream("out.txt")
-			);
-			out.writeObject(grid);
+	public static void serialize()
+	{
+		ObjectOutputStream out	=	null;	
+		ObjectOutputStream outplay = null;
+		try {
+			try {
+				out=new ObjectOutputStream(new FileOutputStream("out.txt"));
+				outplay=new ObjectOutputStream(new FileOutputStream("outplay.txt"));
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				out.writeObject(grid);
+				outplay.writeObject(players);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		finally {
-			out.close();
-		}
-	}
-	public void deserialize() throws IOException,ClassNotFoundException{
-		ObjectInput in = null;
-		try{
-			in = new ObjectInputStream(
-					new FileInputStream("out.txt")
-			);
-			grid = (Grid) in.readObject();
-		}
-		finally {
-			in.close();
+		finally
+		{
+			try {
+				out.close();
+				outplay.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 }
