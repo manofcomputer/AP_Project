@@ -196,8 +196,9 @@ public class Grid extends Pane implements Serializable {
 		
 		@Override
 		public void handle(ActionEvent	event)
-		{	
-			try 
+		{
+			Game.serialize("undogrid.txt","undoplayer.txt");
+			try
 			{
 				block.setPlayer_number(player_number);
 				block.addMass(playfield);		
@@ -271,8 +272,8 @@ public class Grid extends Pane implements Serializable {
 		    	c2=color.getGreen();
 		    	c3=color.getBlue();
 				changeColor(color);
-				Game.serialize();
-				
+				Game.serialize("out.txt","player.txt");
+
 			} 
 			catch (InterruptedException e) 
 			{

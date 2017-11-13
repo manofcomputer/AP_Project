@@ -1,9 +1,14 @@
 import java.io.Serializable;
 import javafx.animation.Interpolator;
+import javafx.animation.ParallelTransition;
+import javafx.animation.PathTransition;
 import javafx.animation.RotateTransition;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.scene.shape.Sphere;
 import javafx.util.Duration;
 
@@ -110,9 +115,8 @@ public class Block extends Group implements Serializable{
 	    s.setMaterial(material);
 	    this.getChildren().add(s);
 	    spheres[critical_mass-1]=s;
-	    /*
 	    int number_spheres=critical_mass-1;
-	    
+	   /* rt.pause();
 	    ParallelTransition pt = new ParallelTransition();
 	    
 	    if(i>0)
@@ -191,16 +195,7 @@ public class Block extends Group implements Serializable{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-		});
-		t.setOnFinished(e -> {
-			try {
-				explode1(playfield);
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		});
-		*/
+		});*/
 		explode1(playfield);
 	}
 	public void explode1(Block[][] playfield) throws InterruptedException

@@ -1,4 +1,7 @@
-/*
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,7 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.text.Font;
 
 
-public class Menu extends Application{
+public class MenuPage extends Application{
     Color black = Color.BLACK;
     Color white = Color.WHITE;
     Color grey = Color.GREY;
@@ -25,6 +28,8 @@ public class Menu extends Application{
     final String HOVERED_BUTTON_STYLE = "-fx-background-color: black;";
     Scene menu,settings;
     String x="2 Player Game";
+    private double sceneWidth = 400;
+    private double sceneHeight = 600;
     static Color[] colors = new Color[8];
 
     {
@@ -122,32 +127,93 @@ public class Menu extends Application{
 
         HBox hBox2 = new HBox();
         Button play = new Button("Play");
-        play.setOnAction((ActionEvent event) -> {
-            Game game = new Game(6,9,Integer.parseInt(num.getText()),colors);
-            try {
-                Game.display(false);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+        play.setOnAction(e -> {
+        	int number_players = Integer.parseInt(num.getText());
+			Player[] players=new Player[number_players];
+			for(int i = 0;i<number_players;i++) {
+				players[i] = new Player(colors[i]);
+			}
+			Game game=new Game(sceneWidth,sceneHeight,6,9,number_players,players);
+			try {
+				game.start(null,primaryStage);
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			});
         Button playHD = new Button("Play with HD Grid");
-        playHD.setOnAction((ActionEvent event) -> {
-            Game game = new Game(10,15,Integer.parseInt(num.getText()),colors);
+        playHD.setOnAction(e -> {
+            int number_players = Integer.parseInt(num.getText());
+            Player[] players=new Player[number_players];
+            for(int i = 0;i<number_players;i++) {
+                players[i] = new Player(colors[i]);
+            }
+            Game game=new Game(sceneWidth,sceneHeight,10,15,number_players,players);
             try {
-                Game.display(false);
-            } catch (Exception e) {
-                e.printStackTrace();
+                game.start(null,primaryStage);
+            } catch (Exception e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
             }
         });
         Button Resume = new Button("Resume");
-        Resume.setOnAction((ActionEvent event) -> {
-            Game game = new Game(0,0,8,colors);
-            try {
-                Game.display(true);
-            } catch (Exception e) {
-                e.printStackTrace();
+        Resume.setOnAction(e -> {
+			ObjectInputStream in = null;
+			ObjectInputStream inplay = null;
+			Grid grid = null;
+			Player[] players = new Player[8];
+			try
+			{
+				try {
+					in=new ObjectInputStream(new FileInputStream("out.txt"));
+					inplay=new ObjectInputStream(new FileInputStream("player.txt"));
+
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				try {
+					grid= (Grid) in.readObject();
+					players = (Player[])inplay.readObject();
+				} catch (ClassNotFoundException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			finally
+			{
+				try {
+					in.close();
+					inplay.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			for(int i = 0;i<players.length;i++) {
+				players[i].initialise();
+			}
+			if(grid.n==6) {
+				System.out.println(grid);
+				Game game = new Game(sceneWidth,sceneHeight,6,9,grid.number_players,players);
+				try {
+					game.start(grid,primaryStage);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			else{
+                System.out.println(grid);
+                Game game = new Game(sceneWidth,sceneHeight,10,15,grid.number_players,players);
+                try {
+                    game.start(grid,primaryStage);
+                } catch (Exception e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
             }
-        });
+		});
         play.setStyle(IDLE_BUTTON_STYLE);
         playHD.setStyle(IDLE_BUTTON_STYLE);
         Resume.setStyle(IDLE_BUTTON_STYLE);
@@ -203,7 +269,7 @@ public class Menu extends Application{
         primaryStage.getIcons().add(new Image("file:///C:/Users/shree/IdeaProjects/ChainReaction/icons/icon.png"));
         primaryStage.setResizable(false);
         primaryStage.show();
+        //Game.serialize("out.txt","player.txt");
     }
 
 }
-*/
