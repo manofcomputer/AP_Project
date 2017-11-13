@@ -19,6 +19,9 @@ public class Settings {
     final static String IDLE_BUTTON_STYLE = "-fx-background-color: #555555;";
     final static String HOVERED_BUTTON_STYLE = "-fx-background-color: black;";
 
+    /**
+     * Displays player settings with color picker option
+     */
     public static void display(){
         Stage primaryStage = new Stage();
         primaryStage.setTitle("Player Settings");

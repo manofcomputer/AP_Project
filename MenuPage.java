@@ -49,6 +49,10 @@ public class MenuPage extends Application{
         launch(args);
     }
 
+    /**
+     * Method starts the Start menupage for the game
+     * @param primaryStage
+     */
     @Override
     public void start(Stage primaryStage)  {
         primaryStage.setTitle("Chain Reaction");
@@ -269,7 +273,6 @@ public class MenuPage extends Application{
         primaryStage.getIcons().add(new Image("file:///C:/Users/shree/IdeaProjects/ChainReaction/icons/icon.png"));
         primaryStage.setResizable(false);
         primaryStage.show();
-        //Game.serialize("out.txt","player.txt");
     }
 
 }

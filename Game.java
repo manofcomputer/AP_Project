@@ -27,6 +27,15 @@ public class Game {
 
 	protected static Player[] players;
 
+    /**
+     * Constructor for game settings
+     * @param sceneWidth
+     * @param sceneHeight
+     * @param n
+     * @param m
+     * @param number_players
+     * @param players
+     */
 	public Game(double sceneWidth, double sceneHeight, int n, int m, int number_players, Player[] players) {
 		this.sceneWidth = sceneWidth;
 		this.sceneHeight = sceneHeight;
@@ -36,6 +45,14 @@ public class Game {
 		this.players = players;
 	}
 
+    /**
+     * This method starts the grid to play the game
+     * put g= null if there is no resume game or put the resumed grid
+     * enter primary stage for playing the grid in the current stage
+     * @param g
+     * @param primaryStage
+     * @throws Exception
+     */
 	public void start(Grid g, Stage primaryStage) throws Exception {
 		//Stage primaryStage = new Stage();
 		VBox root = new VBox();
@@ -133,6 +150,12 @@ public class Game {
 		primaryStage.show();
 	}
 
+	/**
+	 * This function serailizes the Grid class object and Player array in the file
+     * gridfile and playerfile
+	 * @param gridfile
+	 * @param playerfile
+	 */
 	public static void serialize(String gridfile,String playerfile) {
 		ObjectOutputStream out = null;
 		ObjectOutputStream outplay = null;

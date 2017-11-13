@@ -24,6 +24,11 @@ public class Grid extends Pane implements Serializable {
     private int remaining_players;
     private int count=0; // For counting that each player has played at least one turn
     int number_players; // Total number of players
+
+	/**
+	 * initalize to be called on when using resume game to
+	 * reintialize the grid
+	 */
     public void initialise()
     {
     	color=new Color(c1,c2,c3,1);
@@ -37,9 +42,23 @@ public class Grid extends Pane implements Serializable {
     		}
     	}
     }
+
+    /**
+     * Empty Grid object constructor
+     */
     public Grid() {
     	
     }
+
+    /**
+     * Grid Constructor with given specification as parameters
+     * @param sceneWidth
+     * @param sceneHeight
+     * @param border
+     * @param n
+     * @param m
+     * @param number_players
+     */
     public Grid(double sceneWidth,double sceneHeight,double border, int n, int m,int number_players) {
     	player_number=0;
     	color=Game.players[0].getColor();
@@ -51,7 +70,16 @@ public class Grid extends Pane implements Serializable {
     	this.number_players=number_players;
     	this.remaining_players=number_players;
     	//createGrid(sceneWidth,sceneHeight,border,n,m);
-    }	
+    }
+
+    /**
+     * create grid with given parameters
+     * @param sceneWidth
+     * @param sceneHeight
+     * @param border
+     * @param n
+     * @param m
+     */
     public void createGrid(double sceneWidth,double sceneHeight,double border, int n, int m)
     {
     	block_width = (sceneWidth - border) / n;
@@ -99,6 +127,15 @@ public class Grid extends Pane implements Serializable {
             }
         }
     }
+
+    /**
+     * make grid with resumed parameters
+     * @param sceneWidth
+     * @param sceneHeight
+     * @param border
+     * @param n
+     * @param m
+     */
     public void resumeGame(double sceneWidth,double sceneHeight,double border, int n, int m)
     {
     	block_width = (sceneWidth - border) / n;
@@ -175,6 +212,11 @@ public class Grid extends Pane implements Serializable {
 			}
 		}
     }
+
+    /**
+     * Change color of grid
+     * @param c
+     */
     public void changeColor(Color c)
     {
     	for(int i=0;i<n;i++)
@@ -185,6 +227,10 @@ public class Grid extends Pane implements Serializable {
     		}
     	}
     }
+
+    /**
+     * Eventhandler for click on grid
+     */
     class	ClickEvent	implements	EventHandler<ActionEvent>
     {
 		Block block;
@@ -193,7 +239,11 @@ public class Grid extends Pane implements Serializable {
 		{
 			this.block=block;
 		}
-		
+
+        /**
+         * handle function on click
+         * @param event
+         */
 		@Override
 		public void handle(ActionEvent	event)
 		{
