@@ -61,7 +61,7 @@ public class MenuPage extends Application{
 
         VBox vBox = new VBox();
 
-        Image image = new Image("file:///C:/Users/shree/IdeaProjects/ChainReaction/icons/Nuclear-Power-1.jpg");
+        Image image = new Image("Nuclear-Power-1.jpg");
         ImageView im = new ImageView(image);
         im.setFitWidth(100);
         im.setFitHeight(100);
@@ -153,7 +153,7 @@ public class MenuPage extends Application{
             for(int i = 0;i<number_players;i++) {
                 players[i] = new Player(colors[i]);
             }
-            game=new Game(sceneWidth*1.33,sceneHeight*1.33,10,15,number_players,players);
+            game=new Game(sceneWidth*1.5,sceneHeight*1.5,10,15,number_players,players);
             try {
                 game.start(null,primaryStage);
             } catch (Exception e1) {
@@ -210,7 +210,7 @@ public class MenuPage extends Application{
 			}
 			else{
                 System.out.println(grid);
-                Game game = new Game(sceneWidth*1.33,sceneHeight*1.33,10,15,grid.number_players,players);
+                Game game = new Game(sceneWidth*1.5,sceneHeight*1.5,10,15,grid.number_players,players);
                 try {
                     game.start(grid,primaryStage);
                 } catch (Exception e1) {
@@ -271,7 +271,7 @@ public class MenuPage extends Application{
         menu = new Scene(borderPane, 600, 600);
 
         primaryStage.setScene(menu);
-        primaryStage.getIcons().add(new Image("file:///C:/Users/shree/IdeaProjects/ChainReaction/icons/icon.png"));
+        primaryStage.getIcons().add(new Image("icon.png"));
         primaryStage.setResizable(false);
         primaryStage.show();
     }

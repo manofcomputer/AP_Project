@@ -86,7 +86,7 @@ public class Settings {
         vBox.setAlignment(Pos.TOP_CENTER);
         Scene scene = new Scene(vBox,350,400);
         primaryStage.setScene(scene);
-        primaryStage.getIcons().add(new Image("file:///C:/Users/shree/IdeaProjects/ChainReaction/icons/icon.png"));
+        primaryStage.getIcons().add(new Image("icon.png"));
         primaryStage.setResizable(false);
         primaryStage.initModality(Modality.APPLICATION_MODAL);
         primaryStage.show();
