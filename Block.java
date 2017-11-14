@@ -26,12 +26,28 @@ public class Block extends Group implements Serializable{
     transient private Sphere[] spheres;
     private int i,j;
     transient private RotateTransition rt;
-    
-    public void initialise()
+
+	/**
+	 * initialize block after it is resumed
+	 */
+	public void initialise()
     {
     	this.color=new Color(c1,c2,c3,1);
     	spheres=new Sphere[4];
     }
+
+	/**
+	 * Constructor to make block
+	 * @param x
+	 * @param y
+	 * @param width
+	 * @param height
+	 * @param c1
+	 * @param c2
+	 * @param c3
+	 * @param i
+	 * @param j
+	 */
     public Block(double x, double y, double width, double height,double c1,double c2,double c3,int i,int j) {
     	spheres=new Sphere[4];
 		this.x=x;
@@ -53,6 +69,12 @@ public class Block extends Group implements Serializable{
 		if(j==0 || j==Game.m-1)
 			critical_mass--;
     }
+
+	/**
+	 * Add mass to block on the block array
+	 * @param playfield
+	 * @throws InterruptedException
+	 */
     public void addMass(Block[][] playfield) throws InterruptedException
 	{
 		color=Game.players[player_number].getColor();
@@ -104,6 +126,12 @@ public class Block extends Group implements Serializable{
 			
 		}
 	}
+
+	/**
+	 * Explode block
+	 * @param playfield
+	 * @throws InterruptedException
+	 */
 	public void explode(Block[][] playfield) throws InterruptedException
 	{	
 		Sphere s=new Sphere();
@@ -198,6 +226,12 @@ public class Block extends Group implements Serializable{
 		});*/
 		explode1(playfield);
 	}
+
+	/**
+	 * explode other blocks near the grid
+	 * @param playfield
+	 * @throws InterruptedException
+	 */
 	public void explode1(Block[][] playfield) throws InterruptedException
 	{
 		for(int k=0;k<critical_mass;k++)
