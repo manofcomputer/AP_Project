@@ -1,10 +1,13 @@
 import java.io.Serializable;
+import java.util.concurrent.TimeUnit;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 
 public class Grid extends Pane implements Serializable {
 
@@ -24,6 +27,11 @@ public class Grid extends Pane implements Serializable {
     private int remaining_players;
     private int count=0; // For counting that each player has played at least one turn
     int number_players; // Total number of players
+
+	/**
+	 * initalize to be called on when using resume game to
+	 * reintialize the grid
+	 */
     public void initialise()
     {
     	color=new Color(c1,c2,c3,1);
@@ -37,9 +45,23 @@ public class Grid extends Pane implements Serializable {
     		}
     	}
     }
+
+    /**
+     * Empty Grid object constructor
+     */
     public Grid() {
     	
     }
+
+    /**
+     * Grid Constructor with given specification as parameters
+     * @param sceneWidth
+     * @param sceneHeight
+     * @param border
+     * @param n
+     * @param m
+     * @param number_players
+     */
     public Grid(double sceneWidth,double sceneHeight,double border, int n, int m,int number_players) {
     	player_number=0;
     	color=Game.players[0].getColor();
@@ -51,7 +73,16 @@ public class Grid extends Pane implements Serializable {
     	this.number_players=number_players;
     	this.remaining_players=number_players;
     	//createGrid(sceneWidth,sceneHeight,border,n,m);
-    }	
+    }
+
+    /**
+     * create grid with given parameters
+     * @param sceneWidth
+     * @param sceneHeight
+     * @param border
+     * @param n
+     * @param m
+     */
     public void createGrid(double sceneWidth,double sceneHeight,double border, int n, int m)
     {
     	block_width = (sceneWidth - border) / n;
@@ -99,6 +130,15 @@ public class Grid extends Pane implements Serializable {
             }
         }
     }
+
+    /**
+     * make grid with resumed parameters
+     * @param sceneWidth
+     * @param sceneHeight
+     * @param border
+     * @param n
+     * @param m
+     */
     public void resumeGame(double sceneWidth,double sceneHeight,double border, int n, int m)
     {
     	block_width = (sceneWidth - border) / n;
@@ -175,6 +215,11 @@ public class Grid extends Pane implements Serializable {
 			}
 		}
     }
+
+    /**
+     * Change color of grid
+     * @param c
+     */
     public void changeColor(Color c)
     {
     	for(int i=0;i<n;i++)
@@ -185,6 +230,10 @@ public class Grid extends Pane implements Serializable {
     		}
     	}
     }
+
+    /**
+     * Eventhandler for click on grid
+     */
     class	ClickEvent	implements	EventHandler<ActionEvent>
     {
 		Block block;
@@ -193,11 +242,16 @@ public class Grid extends Pane implements Serializable {
 		{
 			this.block=block;
 		}
-		
+
+        /**
+         * handle function on click
+         * @param event
+         */
 		@Override
 		public void handle(ActionEvent	event)
-		{	
-			try 
+		{
+			Game.serialize("undogrid.txt","undoplayer.txt");
+			try
 			{
 				block.setPlayer_number(player_number);
 				block.addMass(playfield);		
@@ -240,6 +294,9 @@ public class Grid extends Pane implements Serializable {
 							if(Game.players[i].isAlive()==true)
 							{
 								System.out.println("Player "+(int)(i+1)+" wins the game");
+								TimeUnit.MILLISECONDS.sleep(100);
+								Game.deleteAllFiles();
+								AlertPrompt.start(new Stage(),"Player "+(int)(i+1)+" wins the game");
 								break;
 							}
 						}
@@ -271,8 +328,9 @@ public class Grid extends Pane implements Serializable {
 		    	c2=color.getGreen();
 		    	c3=color.getBlue();
 				changeColor(color);
-				Game.serialize();
-				
+				if(remaining_players!=1) {
+					Game.serialize("out.txt", "player.txt");
+				}
 			} 
 			catch (InterruptedException e) 
 			{

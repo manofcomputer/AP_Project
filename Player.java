@@ -3,9 +3,6 @@ import java.io.Serializable;
 import javafx.scene.paint.Color;
 
 public class Player implements Serializable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	transient private Color color;
 	double c1,c2,c3;
@@ -14,6 +11,13 @@ public class Player implements Serializable {
 	{
 		color=new Color(c1,c2,c3,1);
 	}
+
+	/**
+	 * Constructor for player based on color integer values
+	 * @param c1
+	 * @param c2
+	 * @param c3
+	 */
 	public Player(double c1,double c2,double c3)
 	{
 		this.c1=c1;
@@ -23,6 +27,11 @@ public class Player implements Serializable {
 		isAlive=true;
 		hasPlayed=false;
 	}
+
+	/**
+	 * Constructor based on Color
+	 * @param c
+	 */
 	public Player(Color c)
 	{
 		this.c1=c.getRed();
@@ -32,6 +41,11 @@ public class Player implements Serializable {
 		isAlive=true;
 		hasPlayed=false;
 	}
+
+	/**
+	 * getter Color
+	 * @return
+	 */
 	public Color getColor() {
 		return color;
 	}
@@ -41,9 +55,19 @@ public class Player implements Serializable {
 		this.c3=c3;
 		this.color = new Color(c1,c2,c3,1);
 	}
+
+	/**
+	 * returns boolean alive status
+	 * @return
+	 */
 	public boolean isAlive() {
 		return isAlive;
 	}
+
+	/**
+	 * Setter for alive
+	 * @param isAlive
+	 */
 	public void setAlive(boolean isAlive) {
 		this.isAlive = isAlive;
 	}

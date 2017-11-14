@@ -6,6 +6,15 @@ import javafx.scene.shape.Rectangle;
 public class Cube extends Pane {
 	Rectangle upper,lower;
 	Line ul,ur,ll,lr;
+
+	/**
+	 * Constructor for cube object
+	 * @param x
+	 * @param y
+	 * @param width
+	 * @param height
+	 * @param c
+	 */
 	public Cube(double x, double y, double width, double height,Color c)
 	{
 		 upper = new Rectangle(x,y,width,height);
@@ -27,6 +36,11 @@ public class Cube extends Pane {
 	     
 	     this.getChildren().addAll(upper,lower,ll,lr,ul,ur);
 	}
+
+	/**
+	 * Change color of cube object
+	 * @param c
+	 */
 	public void changeColor(Color c)
 	{
 		upper.setStroke(c);
