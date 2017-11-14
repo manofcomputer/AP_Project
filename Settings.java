@@ -30,8 +30,10 @@ public class Settings {
         vBox.setPadding(new Insets(20,10,10,10));
         Label[] pp = new Label[8];
         ColorPicker[] colorPickers = new ColorPicker[8];
-        for(int i = 0;i<8;i++)
+        for(int i = 0;i<8;i++) {
             colorPickers[i] = new ColorPicker();
+            colorPickers[i].setStyle("-fx-background-color: white");
+        }
         colorPickers[0].setValue(Color.RED);
         colorPickers[1].setValue(Color.GREEN);
         colorPickers[2].setValue(Color.BLUE);
@@ -40,6 +42,7 @@ public class Settings {
         colorPickers[5].setValue(Color.YELLOW);
         colorPickers[6].setValue(Color.AQUA);
         colorPickers[7].setValue(Color.BROWN);
+        colorPickers[7].setStyle("-fx-background-color: white");
         for(int i =0 ;i<8;i++) {
             pp[i] = new Label("Player "+(i+1));
             pp[i].setTextFill(Color.WHITE);

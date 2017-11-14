@@ -26,6 +26,7 @@ public class Game {
 	private static Grid grid;
 
 	protected static Player[] players;
+	private static Stage originalstage;
 
     /**
      * Constructor for game settings
@@ -55,17 +56,12 @@ public class Game {
      */
 	public void start(Grid g, Stage primaryStage) throws Exception {
 		//Stage primaryStage = new Stage();
+		originalstage = primaryStage;
 		VBox root = new VBox();
 		Menu options = new Menu("Options");
 		options.setStyle("-fx-background-color: #6ab708");
 		MenuItem restart = new MenuItem("Restart");
-		restart.setOnAction(event -> {
-			try {
-				this.start(null, primaryStage);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		});
+		restart.setOnAction(event -> this.restartGame(primaryStage));
 
 		MenuItem menu = new MenuItem("Menu");
 		menu.setOnAction(event -> {
@@ -186,5 +182,22 @@ public class Game {
 				e.printStackTrace();
 			}
 		}
+	}
+	public static void closeStage(){
+		originalstage.close();
+	}
+	public void restartGame(Stage primaryStage){
+		for (int i = 0;i<players.length;i++){
+			players[i].setAlive(true);
+		}
+		try {
+			this.start(null, primaryStage);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static Stage getOriginalstage() {
+		return originalstage;
 	}
 }

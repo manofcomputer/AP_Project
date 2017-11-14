@@ -1,10 +1,14 @@
+import java.io.File;
 import java.io.Serializable;
+import java.nio.file.Files;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 
 public class Grid extends Pane implements Serializable {
 
@@ -291,6 +295,7 @@ public class Grid extends Pane implements Serializable {
 							if(Game.players[i].isAlive()==true)
 							{
 								System.out.println("Player "+(int)(i+1)+" wins the game");
+								AlertPrompt.start(new Stage(),"Player "+(int)(i+1)+" wins the game");
 								break;
 							}
 						}

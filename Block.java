@@ -144,7 +144,9 @@ public class Block extends Group implements Serializable{
 	    this.getChildren().add(s);
 	    spheres[critical_mass-1]=s;
 	    int number_spheres=critical_mass-1;
-	   /* rt.pause();
+
+
+	    /*rt.stop();
 	    ParallelTransition pt = new ParallelTransition();
 	    
 	    if(i>0)

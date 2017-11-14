@@ -28,6 +28,7 @@ public class MenuPage extends Application{
     final String HOVERED_BUTTON_STYLE = "-fx-background-color: black;";
     Scene menu,settings;
     String x="2 Player Game";
+    static Game game;
     private double sceneWidth = 400;
     private double sceneHeight = 600;
     static Color[] colors = new Color[8];
@@ -137,7 +138,7 @@ public class MenuPage extends Application{
 			for(int i = 0;i<number_players;i++) {
 				players[i] = new Player(colors[i]);
 			}
-			Game game=new Game(sceneWidth,sceneHeight,6,9,number_players,players);
+            game=new Game(sceneWidth,sceneHeight,6,9,number_players,players);
 			try {
 				game.start(null,primaryStage);
 			} catch (Exception e1) {
@@ -152,7 +153,7 @@ public class MenuPage extends Application{
             for(int i = 0;i<number_players;i++) {
                 players[i] = new Player(colors[i]);
             }
-            Game game=new Game(sceneWidth,sceneHeight,10,15,number_players,players);
+            game=new Game(sceneWidth*1.33,sceneHeight*1.33,10,15,number_players,players);
             try {
                 game.start(null,primaryStage);
             } catch (Exception e1) {
@@ -199,7 +200,7 @@ public class MenuPage extends Application{
 			}
 			if(grid.n==6) {
 				System.out.println(grid);
-				Game game = new Game(sceneWidth,sceneHeight,6,9,grid.number_players,players);
+                game = new Game(sceneWidth,sceneHeight,6,9,grid.number_players,players);
 				try {
 					game.start(grid,primaryStage);
 				} catch (Exception e1) {
@@ -209,7 +210,7 @@ public class MenuPage extends Application{
 			}
 			else{
                 System.out.println(grid);
-                Game game = new Game(sceneWidth,sceneHeight,10,15,grid.number_players,players);
+                Game game = new Game(sceneWidth*1.33,sceneHeight*1.33,10,15,grid.number_players,players);
                 try {
                     game.start(grid,primaryStage);
                 } catch (Exception e1) {
@@ -275,4 +276,7 @@ public class MenuPage extends Application{
         primaryStage.show();
     }
 
+    public static Game getGame() {
+        return game;
+    }
 }
