@@ -200,4 +200,39 @@ public class Game {
 	public static Stage getOriginalstage() {
 		return originalstage;
 	}
+	public static void deleteAllFiles(){
+		deleteFiles("out.txt","player.txt");
+		deleteFiles("undogrid.txt","undoplayer.txt");
+	}
+	public static void deleteFiles(String gridfile,String playerfile){
+		ObjectOutputStream out = null;
+		ObjectOutputStream outplay = null;
+		try {
+			try {
+				out = new ObjectOutputStream(new FileOutputStream(gridfile));
+				outplay = new ObjectOutputStream(new FileOutputStream(playerfile));
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				out.writeObject("");
+				outplay.writeObject("");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} finally {
+			try {
+				out.close();
+				outplay.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 }

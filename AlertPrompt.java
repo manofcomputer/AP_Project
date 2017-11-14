@@ -54,6 +54,7 @@ public class AlertPrompt {
         primaryStage.getIcons().add(new Image("file:///C:/Users/shree/IdeaProjects/ChainReaction/icons/icon.png"));
         primaryStage.setResizable(false);
         primaryStage.initModality(Modality.APPLICATION_MODAL);
+        primaryStage.setOnCloseRequest(event -> menu.fire());
         primaryStage.show();
     }
 

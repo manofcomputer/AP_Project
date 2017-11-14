@@ -13,9 +13,9 @@ import javafx.scene.shape.Sphere;
 import javafx.util.Duration;
 
 public class Block extends Group implements Serializable{
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private double x,y,width,height;
@@ -37,7 +37,7 @@ public class Block extends Group implements Serializable{
     }
 
 	/**
-	 * Constructor to make block
+	 * Constructor to make block (1)
 	 * @param x
 	 * @param y
 	 * @param width
@@ -128,7 +128,7 @@ public class Block extends Group implements Serializable{
 	}
 
 	/**
-	 * Explode block
+	 * Explode block (1)
 	 * @param playfield
 	 * @throws InterruptedException
 	 */

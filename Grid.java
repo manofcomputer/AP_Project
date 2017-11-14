@@ -1,6 +1,5 @@
-import java.io.File;
 import java.io.Serializable;
-import java.nio.file.Files;
+import java.util.concurrent.TimeUnit;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -295,6 +294,8 @@ public class Grid extends Pane implements Serializable {
 							if(Game.players[i].isAlive()==true)
 							{
 								System.out.println("Player "+(int)(i+1)+" wins the game");
+								TimeUnit.MILLISECONDS.sleep(100);
+								Game.deleteAllFiles();
 								AlertPrompt.start(new Stage(),"Player "+(int)(i+1)+" wins the game");
 								break;
 							}
@@ -327,8 +328,9 @@ public class Grid extends Pane implements Serializable {
 		    	c2=color.getGreen();
 		    	c3=color.getBlue();
 				changeColor(color);
-				Game.serialize("out.txt","player.txt");
-
+				if(remaining_players!=1) {
+					Game.serialize("out.txt", "player.txt");
+				}
 			} 
 			catch (InterruptedException e) 
 			{
