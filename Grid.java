@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
@@ -5,6 +6,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -14,6 +17,10 @@ public class Grid extends Pane implements Serializable {
     /**
 	 * 
 	 */
+	static String musicFile = "click.mp3";     // For example
+
+	static Media sound = new Media(new File(musicFile).toURI().toString());
+	static MediaPlayer mediaPlayer = new MediaPlayer(sound);
 	private static final long serialVersionUID = 1L;
 	private double block_width;
     private double block_height;
@@ -250,6 +257,8 @@ public class Grid extends Pane implements Serializable {
 		@Override
 		public void handle(ActionEvent	event)
 		{
+			mediaPlayer.play();
+			mediaPlayer = new MediaPlayer(sound);
 			Game.serialize("undogrid.txt","undoplayer.txt");
 			try
 			{
