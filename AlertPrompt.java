@@ -16,6 +16,12 @@ import javafx.stage.StageStyle;
 public class AlertPrompt {
     static final String IDLE_BUTTON_STYLE = "-fx-background-color: #555555;";
     static final String HOVERED_BUTTON_STYLE = "-fx-background-color: black;";
+
+    /**
+     * Show the alertBox on primaryStage with the given message
+     * @param primaryStage
+     * @param message
+     */
     public static void start(Stage primaryStage,String message){
         VBox vBox = new VBox();
         vBox.setStyle("-fx-background-color: #1e252a");
@@ -49,12 +55,13 @@ public class AlertPrompt {
         vBox.setAlignment(Pos.CENTER);
         vBox.setSpacing(3);
         vBox.getChildren().addAll(label1,play,menu);
-        Scene scene = new Scene(vBox,300,200);
+        Scene scene = new Scene(vBox,350,200);
         primaryStage.setScene(scene);
         primaryStage.getIcons().add(new Image("file:///C:/Users/shree/IdeaProjects/ChainReaction/icons/icon.png"));
         primaryStage.setResizable(false);
         primaryStage.initModality(Modality.APPLICATION_MODAL);
         primaryStage.setOnCloseRequest(event -> menu.fire());
+        primaryStage.setTitle(message);
         primaryStage.show();
     }
 

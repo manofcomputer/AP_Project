@@ -19,22 +19,22 @@ public class Block extends Group implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	private double x,y,width,height;
-    private int critical_mass,current_mass;
-    private int player_number;
-    transient private Color color;
-    private double c1,c2,c3;
-    transient private Sphere[] spheres;
-    private int i,j;
-    transient private RotateTransition rt;
+	private int critical_mass,current_mass;
+	private int player_number;
+	transient private Color color;
+	private double c1,c2,c3;
+	transient private Sphere[] spheres;
+	private int i,j;
+	transient private RotateTransition rt;
 
 	/**
 	 * initialize block after it is resumed
 	 */
 	public void initialise()
-    {
-    	this.color=new Color(c1,c2,c3,1);
-    	spheres=new Sphere[4];
-    }
+	{
+		this.color=new Color(c1,c2,c3,1);
+		spheres=new Sphere[4];
+	}
 
 	/**
 	 * Constructor to make block (1)
@@ -48,8 +48,8 @@ public class Block extends Group implements Serializable{
 	 * @param i
 	 * @param j
 	 */
-    public Block(double x, double y, double width, double height,double c1,double c2,double c3,int i,int j) {
-    	spheres=new Sphere[4];
+	public Block(double x, double y, double width, double height,double c1,double c2,double c3,int i,int j) {
+		spheres=new Sphere[4];
 		this.x=x;
 		this.y=y;
 		this.width=width;
@@ -62,20 +62,20 @@ public class Block extends Group implements Serializable{
 		this.j=j;
 		current_mass=0;
 		player_number=-1;
-		
+
 		critical_mass=4;
 		if(i==0 || i==Game.n-1)
 			critical_mass--;
 		if(j==0 || j==Game.m-1)
 			critical_mass--;
-    }
+	}
 
 	/**
 	 * Add mass to block on the block array
 	 * @param playfield
 	 * @throws InterruptedException
 	 */
-    public void addMass(Block[][] playfield) throws InterruptedException
+	public void addMass(Block[][] playfield) throws InterruptedException
 	{
 		color=Game.players[player_number].getColor();
 		c1=color.getRed();
@@ -88,42 +88,42 @@ public class Block extends Group implements Serializable{
 			current_mass++;
 			s.setTranslateX(x+(width/2)+((current_mass/2)*12.5));
 			s.setTranslateY(y+(height/2)+((current_mass/3)*12.5));
-		    PhongMaterial material = new PhongMaterial();
-		    material.setDiffuseColor(color);
-		    
-		    s.setMaterial(material);
-		    
-		    spheres[current_mass-1]=s;
-		    getChildren().add(s);
-		    for(int i=0;i<current_mass;i++)
-		    {
-		    	Sphere sphere=spheres[i];
-			    sphere.setMaterial(material);
-		    }
-		    
-		    if(current_mass==critical_mass-1)
-		    {
-		    	rt = new RotateTransition(Duration.millis(1500),this);
-			    rt.setByAngle(360);
-			    rt.setCycleCount(Integer.MAX_VALUE);
-			    rt.setAxis(this.getRotationAxis());
-			    rt.setInterpolator(Interpolator.LINEAR);
-			    rt.play();
-		    }
-		    if(current_mass==2 && critical_mass==4)
-		    {
-		    	rt = new RotateTransition(Duration.millis(5000),this);
-			    rt.setByAngle(360);
-			    rt.setCycleCount(Integer.MAX_VALUE);
-			    rt.setAxis(this.getRotationAxis());
-			    rt.setInterpolator(Interpolator.LINEAR);
-			    rt.play();
-		    }
+			PhongMaterial material = new PhongMaterial();
+			material.setDiffuseColor(color);
+
+			s.setMaterial(material);
+
+			spheres[current_mass-1]=s;
+			getChildren().add(s);
+			for(int i=0;i<current_mass;i++)
+			{
+				Sphere sphere=spheres[i];
+				sphere.setMaterial(material);
+			}
+
+			if(current_mass==critical_mass-1)
+			{
+				rt = new RotateTransition(Duration.millis(1500),this);
+				rt.setByAngle(360);
+				rt.setCycleCount(Integer.MAX_VALUE);
+				rt.setAxis(this.getRotationAxis());
+				rt.setInterpolator(Interpolator.LINEAR);
+				rt.play();
+			}
+			if(current_mass==2 && critical_mass==4)
+			{
+				rt = new RotateTransition(Duration.millis(5000),this);
+				rt.setByAngle(360);
+				rt.setCycleCount(Integer.MAX_VALUE);
+				rt.setAxis(this.getRotationAxis());
+				rt.setInterpolator(Interpolator.LINEAR);
+				rt.play();
+			}
 		}
 		else
 		{
 			explode(playfield);
-			
+
 		}
 	}
 
@@ -133,22 +133,22 @@ public class Block extends Group implements Serializable{
 	 * @throws InterruptedException
 	 */
 	public void explode(Block[][] playfield) throws InterruptedException
-	{	
+	{
 		Sphere s=new Sphere();
 		s.setRadius(width/4);
 		s.setTranslateX(x+(width/2)+((current_mass/2)*12.5));
 		s.setTranslateY(y+(height/2)+((current_mass/3)*12.5));
-	    PhongMaterial material = new PhongMaterial();
-	    material.setDiffuseColor(color);
-	    s.setMaterial(material);
-	    this.getChildren().add(s);
-	    spheres[critical_mass-1]=s;
-	    int number_spheres=critical_mass-1;
+		PhongMaterial material = new PhongMaterial();
+		material.setDiffuseColor(color);
+		s.setMaterial(material);
+		this.getChildren().add(s);
+		spheres[critical_mass-1]=s;
+		int number_spheres=critical_mass-1;
 
 
 	    /*rt.stop();
 	    ParallelTransition pt = new ParallelTransition();
-	    
+
 	    if(i>0)
 		{
 			Sphere sphere=spheres[number_spheres];
@@ -241,12 +241,12 @@ public class Block extends Group implements Serializable{
 			this.getChildren().remove(spheres[k]);
 			spheres[k]=null;
 		}
-		
+
 		current_mass=0;
 		int player_num=player_number;
 		player_number=-1;
-		
-		
+
+
 		if(i>0)
 		{
 			Block block=playfield[i-1][j];
