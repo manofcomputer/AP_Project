@@ -19,6 +19,11 @@ public class PlayerSettings {
     final static String IDLE_BUTTON_STYLE = "-fx-background-color: #555555;";
     final static String HOVERED_BUTTON_STYLE = "-fx-background-color: black;";
     static Stage primaryStage;
+
+    /**
+     * Displays the player setting of player number "player" (1)
+     * @param player
+     */
     static void display(String player){
         primaryStage = new Stage();
         primaryStage.setTitle("Player "+player);

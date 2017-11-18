@@ -18,9 +18,19 @@ public class Grid extends Pane implements Serializable {
 	 * 
 	 */
 	static String musicFile = "click.mp3";     // For example
+	static Media sound;
+	static MediaPlayer mediaPlayer;
 
-	static Media sound = new Media(new File(musicFile).toURI().toString());
-	static MediaPlayer mediaPlayer = new MediaPlayer(sound);
+	{
+		try {
+			sound = new Media(new File(musicFile).toURI().toString());
+			mediaPlayer = new MediaPlayer(sound);
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
+	}
+
 	private static final long serialVersionUID = 1L;
 	private double block_width;
     private double block_height;
@@ -57,7 +67,6 @@ public class Grid extends Pane implements Serializable {
      * Empty Grid object constructor
      */
     public Grid() {
-    	
     }
 
     /**
@@ -303,7 +312,7 @@ public class Grid extends Pane implements Serializable {
 							if(Game.players[i].isAlive()==true)
 							{
 								System.out.println("Player "+(int)(i+1)+" wins the game");
-								TimeUnit.MILLISECONDS.sleep(100);
+								TimeUnit.MILLISECONDS.sleep(200);
 								Game.deleteAllFiles();
 								AlertPrompt.start(new Stage(),"Player "+(int)(i+1)+" wins the game");
 								break;
