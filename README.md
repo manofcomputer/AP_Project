@@ -1,1 +1,1 @@
-# AP_Project
+# Chain Reaction Game in JAVA
