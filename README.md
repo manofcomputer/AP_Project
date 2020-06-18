@@ -1,1 +1,3 @@
-# Chain Reaction Game in JAVA
+# The infamous Chain Reaction Game in implmented in JAVA
+
+![icon](icon.png)
